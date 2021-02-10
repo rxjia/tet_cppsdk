@@ -127,6 +127,7 @@ namespace gtl
          * \return bool True if connected, false if connection failed.
          */
         bool connect( unsigned short port );
+        bool connect( std::string const & host, unsigned short port );
 
         /** Disconnect from server. */
         void disconnect();

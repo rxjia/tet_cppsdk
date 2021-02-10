@@ -13,7 +13,7 @@
 #include "gazeapi_observable.hpp"
 
 #include <boost/asio.hpp>
-#include <boost/timer.hpp>
+#include <boost/timer/timer.hpp>
 #include <boost/thread.hpp>
 
 #include <string>

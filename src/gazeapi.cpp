@@ -129,17 +129,17 @@ namespace gtl
         }
 
         // GazeApi support
-        bool connect( std::string const & port )
+        bool connect( std::string const & host, std::string const & port )
         {
             if( AS_STOPPED != m_state )
             {
                 return false;
             }
-
+            m_host = host;
             m_port = port;
             m_sync_requests.clear();
 
-            bool const success = m_socket.connect( "127.0.0.1", m_port );
+            bool const success = m_socket.connect( m_host, m_port );
 
             if( success )
             {
@@ -181,6 +181,10 @@ namespace gtl
             }
 
             return success;
+        }
+        bool connect(std::string const & port )
+        {
+            return connect("127.0.0.1", port);
         }
 
         void disconnect()
@@ -672,6 +676,7 @@ namespace gtl
         ApiState                m_state;
         CalibrationProxy        m_calibration_proxy;
         std::string             m_port;
+        std::string             m_host;
 
         ServerState             m_server_proxy;
         GazeData                m_gaze_data;
@@ -759,6 +764,13 @@ namespace gtl
         std::stringstream ss;
         ss << port;
         return m_engine->connect( ss.str() );
+    }
+
+    bool GazeApi::connect( std::string const & host, unsigned short port )
+    {
+        std::stringstream ss;
+        ss << port;
+        return m_engine->connect( host, ss.str() );
     }
 
     void GazeApi::disconnect()

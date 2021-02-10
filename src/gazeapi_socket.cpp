@@ -8,14 +8,16 @@
  */
 
 #ifdef _WIN32
-#define WIN32_LEAN_AND_MEAN
-#define _USE_MATH_DEFINES
-#ifndef NOMINMAX
-#define NOMINMAX
-#endif
-#include <windows.h>
-#undef WIN32_LEAN_AND_MEAN
-#undef NOMINMAX
+    #define WIN32_LEAN_AND_MEAN
+    #define _USE_MATH_DEFINES
+    #ifndef NOMINMAX
+    #define NOMINMAX
+    #endif
+    #include <windows.h>
+    #undef WIN32_LEAN_AND_MEAN
+    #undef NOMINMAX
+#elif __linux__
+    #include <iostream>
 #endif
 
 #include "gazeapi_socket.hpp"

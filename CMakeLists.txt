@@ -28,7 +28,7 @@ SET(TET_CPPSDK_LIBS "")
 SET( Boost_USE_MULTITHREAD ON )
 SET( Boost_USE_STATIC_LIBS ON )
 SET(BOOST_MIN_VERSION "1.53.0")
-FIND_PACKAGE( Boost REQUIRED thread system )
+FIND_PACKAGE( Boost REQUIRED thread system chrono)
 
 IF(Boost_FOUND)
   SET(TET_CPPSDK_INCLUDE_DIRS ${TET_CPPSDK_INCLUDE_DIRS} "${Boost_INCLUDE_DIR}")
@@ -72,3 +72,6 @@ ADD_CUSTOM_COMMAND(
   COMMAND ${CMAKE_COMMAND}
   ARGS -E copy_if_different $<TARGET_FILE:${LIB_NAME}> ${TET_CPPSDK_LIBRARY_OUTPUT}
 )
+
+add_executable(example_eye_reader src/example_eye_reader.cpp)
+target_link_libraries(example_eye_reader ${LIB_NAME})
