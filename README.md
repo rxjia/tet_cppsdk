@@ -44,6 +44,14 @@ Build
   f. Generate project files
 3. Build the C++ SDK library with your preferred compiler
 
+# MY Build
+
+```
+mkdir build
+cd build
+cmake -DCMAKE_BUILD_TYPE=Release ../
+make
+```
 
 Getting Help
 ----

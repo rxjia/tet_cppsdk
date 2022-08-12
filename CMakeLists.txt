@@ -16,6 +16,7 @@ endif(COMMAND cmake_policy)
 
 PROJECT(TET_CPPSDK)
 
+#set(CMAKE_C_FLAGS "-fPIC")
 #-----------------------------------------------------------------------------
 #
 # We only want debug and release configurations
@@ -26,12 +27,12 @@ SET(TET_CPPSDK_INCLUDE_DIRS ${CMAKE_CURRENT_LIST_DIR}/include)
 SET(TET_CPPSDK_LIBS "")
 
 SET( Boost_USE_MULTITHREAD ON )
-SET( Boost_USE_STATIC_LIBS ON )
-SET(BOOST_MIN_VERSION "1.53.0")
-FIND_PACKAGE( Boost REQUIRED thread system chrono)
+#SET( Boost_USE_STATIC_LIBS ON )
+SET( BOOST_MIN_VERSION "1.53.0")
+FIND_PACKAGE( Boost REQUIRED COMPONENTS thread system chrono)
 
 IF(Boost_FOUND)
-  SET(TET_CPPSDK_INCLUDE_DIRS ${TET_CPPSDK_INCLUDE_DIRS} "${Boost_INCLUDE_DIR}")
+#  SET(TET_CPPSDK_INCLUDE_DIRS ${TET_CPPSDK_INCLUDE_DIRS} "${Boost_INCLUDE_DIR}")
   SET(TET_CPPSDK_LIBS ${TET_CPPSDK_LIBS} "${Boost_LIBRARIES}")
 ELSE()
   message (FATAL_ERROR "Could not find Boost libraries!")
@@ -53,14 +54,19 @@ IF( NOT EXISTS ${TET_CPPSDK_LIBRARY_OUTPUT} )
 ENDIF( NOT EXISTS ${TET_CPPSDK_LIBRARY_OUTPUT} )
 
 SET( LIB_NAME "GazeApiLib" )
-ADD_LIBRARY(${LIB_NAME} ${TET_CPPSDK_FILES} )
+ADD_LIBRARY(${LIB_NAME} SHARED ${TET_CPPSDK_FILES} )
 SET(TET_CPPSDK_LIBS ${TET_CPPSDK_LIBS} ${LIB_NAME})
 
 IF( WIN32 )
   SET_TARGET_PROPERTIES( ${LIB_NAME} PROPERTIES DEBUG_POSTFIX "D" )
 ENDIF( WIN32 )
 
-TARGET_LINK_LIBRARIES(${LIB_NAME} ${Boost_LIBRARIES})
+#MESSAGE(boost---- ${Boost_LIBRARIES})
+IF(Boost_FOUND)
+  TARGET_LINK_DIRECTORIES(${LIB_NAME} PRIVATE ${Boost_INCLUDE_DIR})
+ENDIF(Boost_FOUND)
+
+TARGET_LINK_LIBRARIES(${LIB_NAME} PRIVATE ${Boost_LIBRARIES})
  
 #-----------------------------------------------------------------------------
 #
@@ -73,5 +79,5 @@ ADD_CUSTOM_COMMAND(
   ARGS -E copy_if_different $<TARGET_FILE:${LIB_NAME}> ${TET_CPPSDK_LIBRARY_OUTPUT}
 )
 
-add_executable(example_eye_reader src/example_eye_reader.cpp)
-target_link_libraries(example_eye_reader ${LIB_NAME})
+#add_executable(example_eye_reader src/example_eye_reader.cpp)
+#target_link_libraries(example_eye_reader ${LIB_NAME})
